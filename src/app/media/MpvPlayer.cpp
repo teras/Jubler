@@ -15,6 +15,7 @@
 #include <QOpenGLWidget>
 #include <QPainter>
 #include <QVBoxLayout>
+#include <QWindow>
 #include <QStringList>
 #include <cmath>
 #include <utility>
@@ -474,6 +475,17 @@ void MpvPlayer::mousePressEvent(QMouseEvent *e) {
         beforeClick_ = {playing_, timeMs_, rangeActive_, rangeStartMs_, rangeEndMs_};
     }
     QWidget::mousePressEvent(e);
+}
+
+// Moved by the window manager, the only way on Wayland; the release then goes
+// to it, so the press ends here.
+void MpvPlayer::mouseMoveEvent(QMouseEvent *e) {
+    if (leftPressed_ && (e->buttons() & Qt::LeftButton)
+            && (e->globalPosition().toPoint() - pressPos_).manhattanLength() >= QApplication::startDragDistance()) {
+        leftPressed_ = false;
+        if (QWindow *w = window()->windowHandle()) w->startSystemMove();
+    }
+    QWidget::mouseMoveEvent(e);
 }
 
 // Only a click: a press that moved away before its release is not one, nor a

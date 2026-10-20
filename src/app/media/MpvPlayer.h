@@ -87,6 +87,8 @@ protected:
     void paintEvent(QPaintEvent *e) override;   // the software renderer's frames
     // A click on the picture plays or pauses, as in media players.
     void mousePressEvent(QMouseEvent *e) override;
+    // A drag on the picture moves the whole window.
+    void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
     void mouseDoubleClickEvent(QMouseEvent *e) override;
 
