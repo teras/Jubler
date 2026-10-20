@@ -139,7 +139,9 @@ public:
     void setVideoMaximized(bool on);
     bool isVideoMaximized() const { return videoMaximized_; }
     void setSnapMenu(bool on);
-    void addNewSubtitleAfter() { addNewSubtitle(true); }
+    // A new subtitle starting at `seconds` (the video position), cut short
+    // before the next one; negative (no video): after the current one.
+    void addNewSubtitleAt(double seconds);
     void showCelebration();
     void stopCelebration();
     void setNewVersionCallback(std::function<void(QWidget *)> cb);

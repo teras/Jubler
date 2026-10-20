@@ -1356,6 +1356,24 @@ void MainWindow::addNewSubtitle(bool isAfter) {
     setSelectedSub(where, true);
 }
 
+void MainWindow::addNewSubtitleAt(double seconds) {
+    if (!subs_) return;
+    if (seconds < 0) {
+        addNewSubtitle(true);
+        return;
+    }
+    double end = seconds + NEW_SUB_DURATION;
+    for (int i = 0; i < subs_->size(); ++i) {
+        const double next = subs_->get(i)->getStartTime().toSeconds();
+        if (next > seconds) {
+            end = std::min(end, next);
+            break;
+        }
+    }
+    const int where = addSubEntry(std::make_shared<SubEntry>(Time(seconds), Time(end), QString(QLatin1String(""))));
+    setSelectedSub(where, true);
+}
+
 void MainWindow::splitWith(bool asPrevious) {
     if (!subs_) return;
     const int row = getSelectedRowIdx();

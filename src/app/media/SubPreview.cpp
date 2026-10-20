@@ -168,8 +168,8 @@ void SubPreview::buildUi() {
     spacer->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     tools->addWidget(spacer);
     tools->addSeparator();
-    QToolButton *newSub = tb(QStringLiteral("newsub"), __("New subtitle after current one"), false);
-    connect(newSub, &QToolButton::clicked, this, [this]() { parent_->addNewSubtitleAfter(); });
+    QToolButton *newSub = tb(QStringLiteral("newsub"), __("New subtitle at the video position"), false);
+    connect(newSub, &QToolButton::clicked, this, [this]() { parent_->addNewSubtitleAt(timeline_->playhead()); });
     ml->addWidget(tools);
     split_->addWidget(mainPanel);
     split_->setStretchFactor(0, 1);
