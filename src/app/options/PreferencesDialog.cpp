@@ -643,13 +643,18 @@ public:
 
         auto *buttons = new QHBoxLayout();
         auto *exportB = new QPushButton(__("Export"), this);
-        auto *importB = new QPushButton(__("Import"), this);
-        auto *javaB = new QPushButton(__("Import from Java Jubler"), this);
+        auto *importAction = new QAction(__("Import"), this);
+        auto *importB = new QToolButton(this);
+        importB->setDefaultAction(importAction);
+        importB->setPopupMode(QToolButton::MenuButtonPopup);
+        importB->setMinimumHeight(exportB->sizeHint().height());
+        auto *importMenu = new QMenu(importB);
+        auto *javaB = importMenu->addAction(__("Import from Java Jubler"));
         javaB->setToolTip(__("Copy the preferences of the older, Java based, Jubler"));
+        importB->setMenu(importMenu);
         auto *resetB = new QPushButton(__("Reset"), this);
         buttons->addWidget(exportB);
         buttons->addWidget(importB);
-        buttons->addWidget(javaB);
         buttons->addWidget(resetB);
         buttons->addStretch(1);
         auto *cancel = new QPushButton(__("Cancel"), this);
@@ -676,7 +681,7 @@ public:
             AppContext::updateExternals();
             QMessageBox::information(this, __("Success"), __("Preferences imported successfully.\nConsider exiting Jubler and restarting it to apply the new preferences."));
         };
-        connect(importB, &QPushButton::clicked, this, [this, imported]() {
+        connect(importAction, &QAction::triggered, this, [this, imported]() {
             const QString f = QFileDialog::getOpenFileName(this, __("Import preferences"), FileCommunicator::getDefaultDirPath(), __("Preference files") + QStringLiteral(" (*.ini *.xml)"));
             if (f.isEmpty()) return;
             keepSnapshot();
@@ -684,7 +689,7 @@ public:
             if (err.isEmpty()) imported();
             else QMessageBox::critical(this, __("Error"), err);
         });
-        connect(javaB, &QPushButton::clicked, this, [this, imported]() {
+        connect(javaB, &QAction::triggered, this, [this, imported]() {
             const QMap<QString, QString> java = JavaPrefs::readNativeStore();
             if (java.isEmpty()) {
                 QMessageBox::information(this, __("Import from Java Jubler"), __("No preferences of the Java Jubler were found."));
@@ -749,9 +754,13 @@ public:
     void run(QWidget *owner) {
         loadAll();
         if (QAbstractButton *first = group_->button(0)) first->click();
-        // Packed to the largest page and centred on the screen (Java setLocationRelativeTo(null)).
-        setFixedSize(sizeHint());
-        if (const QScreen *scr = owner->window()->screen()) move(scr->availableGeometry().center() - rect().center());
+        // Keep a fixed 4:3 shape, unless a page needs more height.
+        QSize preferred = sizeHint();
+        preferred.setHeight(std::max(preferred.height(), qRound(preferred.width() * 0.75)));
+        const QScreen *scr = owner->window()->screen();
+        if (scr) preferred.setHeight(std::min(preferred.height(), scr->availableGeometry().height()));
+        setFixedSize(preferred);
+        if (scr) move(scr->availableGeometry().center() - rect().center());
         snapshot_.reset();
         if (exec() == QDialog::Accepted)
             for (OptionsPage *p : pages_) p->savePreferences();
